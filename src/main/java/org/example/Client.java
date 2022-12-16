@@ -86,12 +86,10 @@ public class Client {
                             out.close();
                             socket.close();
                         } catch (Exception e) {
-                            System.out.println("ee");
                             e.printStackTrace();
                         }
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace(); // 예외처리
             }
@@ -128,8 +126,6 @@ public class Client {
 
 
                     if (jsonData.has("users") || jsonData.has("monsters")) { // 서버에서 넘어오는 json 데이터에 users 키가 있다면 (users 명령문 입력했을 때)
-
-
                         // JSONArray jsonArray = new JSONArray(reader.readLine());
                         String read = reader.readLine();
                         if (read.toString().charAt(0) == '[') { // JSONArray 형식 제대로 들어온다면
