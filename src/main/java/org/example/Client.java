@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 // chatClient3 json으로 데이터 보내기
 
-public class chatClient {
+public class Client {
 
     // 소켓 생성한 뒤 서버 접속
     // 성공 시 서버에 메시지 보내고 읽을 스레드 생성한 뒤 start 시킴
@@ -77,13 +77,18 @@ public class chatClient {
 
                     } else { // 일반 명령문
                         jsonText.put("text", text);
-                        // System.out.println("jsonText = " + jsonText); // jsonData = {"text":"bluesun"}
                     }
                     writer.println(jsonText); // 입력한 메세지 발송
 
                     if (text.equals("quit")) {
-                        out.close();
-                        writer.close();
+                        try {
+                            writer.close();
+                            out.close();
+                            socket.close();
+                        } catch (Exception e) {
+                            System.out.println("ee");
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -126,20 +131,19 @@ public class chatClient {
 
 
                         // JSONArray jsonArray = new JSONArray(reader.readLine());
-                        String xx = reader.readLine();
-                        if (xx.toString().charAt(0) == '[') { // JSONArray 형식 제대로 들어온다면
+                        String read = reader.readLine();
+                        if (read.toString().charAt(0) == '[') { // JSONArray 형식 제대로 들어온다면
                             // 근데 이걸 클라이언트에서 하는게 맞음??
-                            JSONArray jsonArray = new JSONArray(xx);
+                            JSONArray jsonArray = new JSONArray(read);
                             // JsonArray에서 요소 추출하기 (배열처럼 인덱스 사용)
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 System.out.println("<<" + ((JSONObject) jsonArray.get(i)).get("name") + " 위치>>\nx좌표: " + ((JSONObject) jsonArray.get(i)).get("x") + ", " + "y좌표: " + ((JSONObject) jsonArray.get(i)).get("y"));
                             }
                         }
-
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("연결 종료!");
             }
         }
     }
